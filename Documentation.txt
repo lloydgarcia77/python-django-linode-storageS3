@@ -1,0 +1,40 @@
+pip install django django-storages boto boto3
+
+Create buckent on linode:
+    -Object storage
+    -Create bucket
+    -Bucket name
+    -Bucket region
+    -[NOTE] Copy  the Access Key and Secret Key
+
+Documentation:
+    -https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html?highlight=aws_default_acl
+
+Scripts: 
+        
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+    LINODE_BUCKET = ''
+    LINODE_BUCKET_REGION = '' 
+    LINODE_BUCKET_ACCESS_KEY = ''
+    LINODE_BUCKET_SECRET_KEY = ''
+                        
+    AWS_S3_ENDPOINT_URL = f'https://{LINODE_BUCKET_REGION}.linodeobjects.com'
+    AWS_ACCESS_KEY_ID = LINODE_BUCKET_ACCESS_KEY
+    AWS_SECRET_ACCESS_KEY = LINODE_BUCKET_SECRET_KEY
+    AWS_S3_REGION_NAME = LINODE_BUCKET_REGION
+    AWS_STORAGE_BUCKET_NAME = LINODE_BUCKET
+    # To Avoid private access which leads to 403 forbidden error
+    AWS_DEFAULT_ACL = 'public-read'
+
+
+Troubleshooting:
+    -403 Forbidden Error 
+    Download Cyberduck S3 to access the files on the Linode Bucket
+        -https://cyberduck.io/s3/
+        -open connection
+            -Server: ap-south-1.linodeobjects.com #ap-south-1 -> Region
+            -Access key and secret key
+            -Delete the files
+            -python manage.py collectstatic
